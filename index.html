@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="uk">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -32,7 +32,7 @@
             position: relative;
         }
 
-        /* АНІМАЦІЯ ПАДІННЯ СЕРДЕЧОК ТА КАРТИНКИ */
+        /* АНІМАЦІЯ ПАДІННЯ СЕРДЕЧОК НА ФОНІ */
         .falling-item {
             position: absolute;
             pointer-events: none;
@@ -43,15 +43,6 @@
         .falling-heart {
             color: rgba(255, 71, 126, 0.45);
             font-size: 24px;
-        }
-
-        .falling-pic {
-            width: 50px;
-            height: 50px;
-            object-fit: cover;
-            border-radius: 10px;
-            border: 2px solid rgba(255, 143, 171, 0.6);
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
         }
 
         @keyframes fall {
@@ -67,8 +58,8 @@
             }
         }
 
-        /* ЕКРАН 1: КОТИКИ (З'ЯВЛЯЮТЬСЯ ПЕРШИМИ) */
-        #cats-screen {
+        /* СПІЛЬНИЙ СТИЛЬ ДЛЯ ЕКРАНІВ */
+        .screen {
             position: fixed;
             top: 0;
             left: 0;
@@ -78,23 +69,31 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            z-index: 100;
+            z-index: 10;
             background: linear-gradient(135deg, #ffe5ec, #ffc2d1);
             transition: opacity 0.8s ease, visibility 0.8s;
+            padding: 20px;
         }
 
-        #cats-screen.hidden {
+        .screen.hidden {
             opacity: 0;
             visibility: hidden;
+            pointer-events: none;
+        }
+
+        /* ЕКРАН 1: КОТИКИ */
+        #cats-screen {
+            z-index: 100;
         }
 
         .cats-title {
             color: #fb6f92;
-            font-size: 2rem;
+            font-size: 1.5rem;
             margin-bottom: 40px;
             text-align: center;
-            padding: 0 20px;
+            max-width: 500px;
             font-weight: bold;
+            line-height: 1.4;
             animation: pulseText 2s infinite alternate;
         }
 
@@ -106,7 +105,6 @@
             flex-wrap: wrap;
         }
 
-        /* Стиль котиків з вирізаним фоном */
         .cat-avatar {
             width: 110px;
             height: 110px;
@@ -129,29 +127,66 @@
             pointer-events: none;
         }
 
-        @keyframes wiggle {
-            0% { transform: rotate(-10deg) scale(1); }
-            100% { transform: rotate(10deg) scale(1.05); }
+        /* ЕКРАН 2: СЛАЙДШОУ */
+        #slideshow-screen {
+            z-index: 50;
         }
 
-        /* ЕКРАН 2: КОНВЕРТ */
-        #main-screen {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            opacity: 0;
-            transform: scale(0.9);
-            transition: opacity 1s ease, transform 1s ease;
+        .slideshow-title {
+            color: #fb6f92;
+            font-size: 1.4rem;
+            margin-bottom: 25px;
+            text-align: center;
+            max-width: 450px;
+            font-weight: bold;
+            line-height: 1.4;
+        }
+
+        .slideshow-container {
+            width: 280px;
+            height: 380px;
+            position: relative;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            border: 4px solid #fff;
+            margin-bottom: 25px;
+        }
+
+        .slide {
+            position: absolute;
             width: 100%;
-            max-width: 600px;
-            padding: 20px;
-            z-index: 5;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0;
+            transition: opacity 1s ease-in-out;
         }
 
-        #main-screen.visible {
+        .slide.active {
             opacity: 1;
-            transform: scale(1);
+        }
+
+        .next-btn {
+            background-color: #fb6f92;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            font-size: 1.1rem;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: bold;
+            box-shadow: 0 5px 15px rgba(251, 111, 146, 0.4);
+            transition: transform 0.2s, background-color 0.2s;
+        }
+
+        .next-btn:hover {
+            background-color: #ff477e;
+            transform: scale(1.05);
+        }
+
+        /* ЕКРАН 3: КОНВЕРТ */
+        #envelope-screen {
+            z-index: 10;
         }
 
         .hint {
@@ -248,7 +283,7 @@
             pointer-events: none;
         }
 
-        /* Відкритий стан */
+        /* Відкритий стан конверта */
         .envelope-wrapper.open::before {
             transform: rotateX(180deg);
             z-index: 1;
@@ -282,18 +317,23 @@
             display: block;
         }
 
+        /* Анімації */
+        @keyframes wiggle {
+            0% { transform: rotate(-10deg) scale(1); }
+            100% { transform: rotate(10deg) scale(1.05); }
+        }
+
         @keyframes pulseText {
             0% { transform: scale(1); }
-            100% { transform: scale(1.05); }
+            100% { transform: scale(1.03); }
         }
     </style>
 </head>
 <body>
 
     <!-- ЕКРАН 1: КОТИКИ -->
-    <div id="cats-screen">
-        <!-- Текст змінено на "это ты" -->
-        <div class="cats-title">это ты... 🐾✨</div>
+    <div id="cats-screen" class="screen">
+        <div class="cats-title">котів погладити не вийде, а от натиснути на них — так! 🐾✨</div>
         <div class="cats-container">
             <img src="https://i.pinimg.com/736x/1d/ca/a2/1dcaa28d80f2084714feac839c580566.jpg" class="cat-avatar" onclick="popCat(this)">
             <img src="https://i.pinimg.com/736x/79/46/fc/7946fcd50621a9dbd7a62b8eaba2cc2f.jpg" class="cat-avatar" onclick="popCat(this)">
@@ -301,8 +341,21 @@
         </div>
     </div>
 
-    <!-- ЕКРАН 2: КОНВЕРТ -->
-    <div id="main-screen">
+    <!-- ЕКРАН 2: СЛАЙДШОУ (Мінсони та TXT) -->
+    <div id="slideshow-screen" class="screen hidden">
+        <div class="slideshow-title">киця це все могли б бути ми, якби ти була поруч. 🥺💞</div>
+        <div class="slideshow-container">
+            <img src="https://i.pinimg.com/736x/67/9a/f3/679af3934396a0f0f0a912a634945731.jpg" class="slide active">
+            <img src="https://i.pinimg.com/736x/7f/93/d7/7f93d78ae4ea9771e4d96120d13842f1.jpg" class="slide">
+            <img src="https://i.pinimg.com/736x/8e/2c/47/8e2c4777398ebd31263d3f3a14545cb8.jpg" class="slide">
+            <img src="https://i.pinimg.com/1200x/12/fe/f8/12fef8a212ee6669f28b33d0581b6b1b.jpg" class="slide">
+            <img src="https://i.pinimg.com/1200x/ef/2f/eb/ef2febe2bf37c20f4b39b66b008f11e5.jpg" class="slide">
+        </div>
+        <button class="next-btn" onclick="goToEnvelope()">Далі ❤️</button>
+    </div>
+
+    <!-- ЕКРАН 3: КОНВЕРТ (Тут падають ТІЛЬКИ сердечка) -->
+    <div id="envelope-screen" class="screen hidden">
         <div class="hint">Сломай печать, чтобы открыть конверт 💌</div>
         
         <div class="envelope-wrapper" id="envelope">
@@ -320,16 +373,8 @@
     </div>
 
     <script>
-        // Твої картинки для фону
-        const fallingImages = [
-            'https://i.pinimg.com/736x/67/9a/f3/679af3934396a0f0f0a912a634945731.jpg',
-            'https://i.pinimg.com/736x/7f/93/d7/7f93d78ae4ea9771e4d96120d13842f1.jpg',
-            'https://i.pinimg.com/736x/8e/2c/47/8e2c4777398ebd31263d3f3a14545cb8.jpg',
-            'https://i.pinimg.com/1200x/12/fe/f8/12fef8a212ee6669f28b33d0581b6b1b.jpg',
-            'https://i.pinimg.com/1200x/ef/2f/eb/ef2febe2bf37c20f4b39b66b008f11e5.jpg'
-        ];
-
         let catsCount = 3;
+        let slideInterval;
 
         // Клік на котика
         function popCat(element) {
@@ -351,72 +396,80 @@
             // Якщо зникли всі 3 котики
             if (catsCount === 0) {
                 setTimeout(() => {
-                    // Зникає екран з котиками
+                    // Перехід до Екрану 2 (Слайдшоу)
                     document.getElementById('cats-screen').classList.add('hidden');
-                    
-                    // Великий вибух конфеті-сердечок на весь екран
-                    const duration = 2 * 1000;
-                    const end = Date.now() + duration;
-
-                    (function frame() {
-                        confetti({
-                            particleCount: 7,
-                            angle: 60,
-                            spread: 55,
-                            origin: { x: 0 },
-                            colors: ['#ff477e', '#ff8fab']
-                        });
-                        confetti({
-                            particleCount: 7,
-                            angle: 120,
-                            spread: 55,
-                            origin: { x: 1 },
-                            colors: ['#ff477e', '#ff8fab']
-                        });
-
-                        if (Date.now() < end) {
-                            requestAnimationFrame(frame);
-                        }
-                    }());
-
-                    // Плавно показуємо конверт
-                    setTimeout(() => {
-                        document.getElementById('main-screen').classList.add('visible');
-                        startFallingBackground(); // запускаємо постійне падіння картинок та сердечок
-                    }, 800);
-
-                }, 500);
+                    document.getElementById('slideshow-screen').classList.remove('hidden');
+                    startSlideshow();
+                }, 600);
             }
         }
 
-        // Постійне падіння картинок і сердечок на фоні
-        function startFallingBackground() {
+        // Логіка роботи слайдшоу
+        function startSlideshow() {
+            const slides = document.querySelectorAll('.slide');
+            let currentSlide = 0;
+
+            slideInterval = setInterval(() => {
+                slides[currentSlide].classList.remove('active');
+                currentSlide = (currentSlide + 1) % slides.length;
+                slides[currentSlide].classList.add('active');
+            }, 2500); // картинки змінюються кожні 2.5 секунди
+        }
+
+        // Перехід до екрану з конвертом
+        function goToEnvelope() {
+            clearInterval(slideInterval); // Зупиняємо слайдшоу
+            
+            document.getElementById('slideshow-screen').classList.add('hidden');
+            document.getElementById('envelope-screen').classList.remove('hidden');
+
+            // Потужний вибух конфеті при переході до конверта
+            const duration = 2 * 1000;
+            const end = Date.now() + duration;
+
+            (function frame() {
+                confetti({
+                    particleCount: 7,
+                    angle: 60,
+                    spread: 55,
+                    origin: { x: 0 },
+                    colors: ['#ff477e', '#ff8fab']
+                });
+                confetti({
+                    particleCount: 7,
+                    angle: 120,
+                    spread: 55,
+                    origin: { x: 1 },
+                    colors: ['#ff477e', '#ff8fab']
+                });
+
+                if (Date.now() < end) {
+                    requestAnimationFrame(frame);
+                }
+            }());
+
+            // Запускаємо фонове падіння ТІЛЬКИ сердечок
+            startFallingHearts();
+        }
+
+        // Постійне падіння ТІЛЬКИ сердечок
+        function startFallingHearts() {
             const body = document.querySelector('body');
             
             setInterval(() => {
                 const item = document.createElement('div');
-                item.classList.add('falling-item');
-
-                // Випадково вибираємо: спавнити сердечко чи картинку
-                if (Math.random() > 0.4) {
-                    item.classList.add('falling-heart');
-                    item.innerText = '❤️';
-                } else {
-                    const img = document.createElement('img');
-                    img.classList.add('falling-pic');
-                    img.src = fallingImages[Math.floor(Math.random() * fallingImages.length)];
-                    item.appendChild(img);
-                }
+                item.classList.add('falling-item', 'falling-heart');
+                item.innerText = '❤️';
 
                 item.style.left = Math.random() * 100 + 'vw';
-                item.style.animationDuration = Math.random() * 3 + 5 + 's'; // 5-8 секунд падіння
+                item.style.animationDuration = Math.random() * 3 + 5 + 's'; // падіння від 5 до 8 секунд
                 
                 body.appendChild(item);
 
                 setTimeout(() => {
                     item.remove();
                 }, 8000);
-            }, 300); // Новий елемент кожні 0.3 секунди
+            }, 300); // нове сердечко кожні 0.3 секунди
         }
 
         // Руйнування сургучної печатки
@@ -425,7 +478,7 @@
             const seal = document.getElementById('seal');
             seal.classList.add('cracked');
 
-            // Робимо ефект тріскання (дрібне конфеті)
+            // Ефект руйнування печатки (дрібне конфеті)
             confetti({
                 particleCount: 30,
                 spread: 60,
