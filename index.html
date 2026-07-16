@@ -62,7 +62,6 @@
             10% { opacity: 1; }
             90% { opacity: 1; }
             100% {
-                /* Обертання туди-сюди приблизно на 300 градусів */
                 transform: translateY(105vh) rotate(300deg);
                 opacity: 0;
             }
@@ -91,11 +90,12 @@
 
         .cats-title {
             color: #fb6f92;
-            font-size: 1.5rem;
-            margin-bottom: 30px;
+            font-size: 2rem;
+            margin-bottom: 40px;
             text-align: center;
             padding: 0 20px;
             font-weight: bold;
+            animation: pulseText 2s infinite alternate;
         }
 
         .cats-container {
@@ -106,7 +106,7 @@
             flex-wrap: wrap;
         }
 
-        /* Стиль котиків з вирізаним фоном (круглі на рожевому тлі) */
+        /* Стиль котиків з вирізаним фоном */
         .cat-avatar {
             width: 110px;
             height: 110px;
@@ -120,7 +120,6 @@
             animation: wiggle 2s ease-in-out infinite alternate;
         }
 
-        /* Кожен котик хитається з трохи різною швидкістю */
         .cat-avatar:nth-child(2) { animation-duration: 1.7s; }
         .cat-avatar:nth-child(3) { animation-duration: 2.3s; }
 
@@ -133,36 +132,6 @@
         @keyframes wiggle {
             0% { transform: rotate(-10deg) scale(1); }
             100% { transform: rotate(10deg) scale(1.05); }
-        }
-
-        /* МУЗИЧНИЙ ПЛЕЄР ЗБОКУ */
-        .music-player {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            width: 65px;
-            height: 65px;
-            border-radius: 50%;
-            background-image: url('https://i.pinimg.com/1200x/ee/49/cb/ee49cb9862d6741598eec67fa8202f60.jpg');
-            background-size: cover;
-            background-position: center;
-            border: 3px solid #ff8fab;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-            cursor: pointer;
-            z-index: 50;
-            transition: transform 0.3s;
-        }
-
-        .music-player:hover {
-            transform: scale(1.1);
-        }
-
-        .music-player.playing {
-            animation: spin 5s linear infinite;
-        }
-
-        @keyframes spin {
-            100% { transform: rotate(360deg); }
         }
 
         /* ЕКРАН 2: КОНВЕРТ */
@@ -312,19 +281,19 @@
             margin-top: 10px;
             display: block;
         }
+
+        @keyframes pulseText {
+            0% { transform: scale(1); }
+            100% { transform: scale(1.05); }
+        }
     </style>
 </head>
 <body>
 
-    <!-- АУДІО-ТРЕК -->
-    <audio id="bg-music" src="https://assets.mixkit.co/music/preview/mixkit-beautiful-dream-dreamy-slow-texture-1165.mp3" loop></audio>
-
-    <!-- ПЛЕЄР ЗБОКУ -->
-    <div class="music-player" id="music-btn" onclick="toggleMusic()"></div>
-
     <!-- ЕКРАН 1: КОТИКИ -->
     <div id="cats-screen">
-        <div class="cats-title">Нажми на каждого котика, чтобы убрать их... 🐾✨</div>
+        <!-- Текст змінено на "это ты" -->
+        <div class="cats-title">это ты... 🐾✨</div>
         <div class="cats-container">
             <img src="https://i.pinimg.com/736x/1d/ca/a2/1dcaa28d80f2084714feac839c580566.jpg" class="cat-avatar" onclick="popCat(this)">
             <img src="https://i.pinimg.com/736x/79/46/fc/7946fcd50621a9dbd7a62b8eaba2cc2f.jpg" class="cat-avatar" onclick="popCat(this)">
@@ -430,11 +399,9 @@
 
                 // Випадково вибираємо: спавнити сердечко чи картинку
                 if (Math.random() > 0.4) {
-                    // Спавнимо сердечко
                     item.classList.add('falling-heart');
                     item.innerText = '❤️';
                 } else {
-                    // Спавнимо картинку
                     const img = document.createElement('img');
                     img.classList.add('falling-pic');
                     img.src = fallingImages[Math.floor(Math.random() * fallingImages.length)];
@@ -450,23 +417,6 @@
                     item.remove();
                 }, 8000);
             }, 300); // Новий елемент кожні 0.3 секунди
-        }
-
-        // Звуковий супровід
-        const audio = document.getElementById('bg-music');
-        const musicBtn = document.getElementById('music-btn');
-
-        // Ми ставимо посилання на аудіозапис пісні Feist - My Moon My Man
-        audio.src = "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"; // за замовчуванням приклад, ти можеш вставити сюди пряме mp3-посилання на пісню!
-
-        function toggleMusic() {
-            if (audio.paused) {
-                audio.play();
-                musicBtn.classList.add('playing');
-            } else {
-                audio.pause();
-                musicBtn.classList.remove('playing');
-            }
         }
 
         // Руйнування сургучної печатки
