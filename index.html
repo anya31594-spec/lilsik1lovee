@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>лилсик1лав ❤️</title>
+    <!-- Підключаємо бібліотеку для красивого конфеті-салюту -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <style>
         :root {
             --bg-color: #ffe5ec;
@@ -30,35 +32,44 @@
             position: relative;
         }
 
-        /* Анімація падаючих сердечок на фоні */
-        .falling-heart {
+        /* АНІМАЦІЯ ПАДІННЯ СЕРДЕЧОК ТА КАРТИНКИ */
+        .falling-item {
             position: absolute;
-            color: rgba(255, 71, 126, 0.4);
-            font-size: 20px;
             pointer-events: none;
             z-index: 1;
             animation: fall linear infinite;
         }
 
+        .falling-heart {
+            color: rgba(255, 71, 126, 0.45);
+            font-size: 24px;
+        }
+
+        .falling-pic {
+            width: 50px;
+            height: 50px;
+            object-fit: cover;
+            border-radius: 10px;
+            border: 2px solid rgba(255, 143, 171, 0.6);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
         @keyframes fall {
             0% {
-                transform: translateY(-20px) rotate(0deg);
+                transform: translateY(-70px) rotate(0deg);
                 opacity: 0;
             }
-            10% {
-                opacity: 1;
-            }
-            90% {
-                opacity: 1;
-            }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
             100% {
-                transform: translateY(105vh) rotate(360deg);
+                /* Обертання туди-сюди приблизно на 300 градусів */
+                transform: translateY(105vh) rotate(300deg);
                 opacity: 0;
             }
         }
 
-        /* Екран 1: Інтро (Кнопка-Серце) */
-        #intro-screen {
+        /* ЕКРАН 1: КОТИКИ (З'ЯВЛЯЮТЬСЯ ПЕРШИМИ) */
+        #cats-screen {
             position: fixed;
             top: 0;
             left: 0;
@@ -68,64 +79,93 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            z-index: 10;
-            transition: opacity 0.6s ease, visibility 0.6s;
+            z-index: 100;
             background: linear-gradient(135deg, #ffe5ec, #ffc2d1);
+            transition: opacity 0.8s ease, visibility 0.8s;
         }
 
-        #intro-screen.hidden {
+        #cats-screen.hidden {
             opacity: 0;
             visibility: hidden;
         }
 
-        .intro-title {
+        .cats-title {
             color: #fb6f92;
-            font-size: 2rem;
-            margin-bottom: 40px;
-            animation: pulseText 2s infinite alternate;
+            font-size: 1.5rem;
+            margin-bottom: 30px;
+            text-align: center;
             padding: 0 20px;
-            text-align: center;
-        }
-
-        .big-heart {
-            background-color: var(--heart-color);
-            display: inline-block;
-            height: 100px;
-            position: relative;
-            transform: rotate(-45deg);
-            width: 100px;
-            cursor: pointer;
-            animation: beat 1.2s infinite;
-            box-shadow: 0 10px 30px rgba(255, 71, 126, 0.5);
-        }
-
-        .big-heart:before,
-        .big-heart:after {
-            content: "";
-            background-color: var(--heart-color);
-            border-radius: 50%;
-            position: absolute;
-            width: 100px;
-            height: 100px;
-        }
-
-        .big-heart:before { top: -50px; left: 0; }
-        .big-heart:after { top: 0; left: 50px; }
-
-        .click-me {
-            position: absolute;
-            transform: rotate(45deg);
-            color: white;
             font-weight: bold;
-            font-size: 1.1rem;
-            width: 100%;
-            text-align: center;
-            top: 35px;
-            left: 0;
-            z-index: 2;
         }
 
-        /* Екран 2: Конверт та Лист */
+        .cats-container {
+            display: flex;
+            gap: 25px;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        /* Стиль котиків з вирізаним фоном (круглі на рожевому тлі) */
+        .cat-avatar {
+            width: 110px;
+            height: 110px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid #ff8fab;
+            background-color: #ffe5ec;
+            cursor: pointer;
+            box-shadow: 0 8px 20px rgba(255, 71, 126, 0.3);
+            transition: transform 0.3s ease, opacity 0.5s ease;
+            animation: wiggle 2s ease-in-out infinite alternate;
+        }
+
+        /* Кожен котик хитається з трохи різною швидкістю */
+        .cat-avatar:nth-child(2) { animation-duration: 1.7s; }
+        .cat-avatar:nth-child(3) { animation-duration: 2.3s; }
+
+        .cat-avatar.fade-out {
+            opacity: 0;
+            transform: scale(0.2);
+            pointer-events: none;
+        }
+
+        @keyframes wiggle {
+            0% { transform: rotate(-10deg) scale(1); }
+            100% { transform: rotate(10deg) scale(1.05); }
+        }
+
+        /* МУЗИЧНИЙ ПЛЕЄР ЗБОКУ */
+        .music-player {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 65px;
+            height: 65px;
+            border-radius: 50%;
+            background-image: url('https://i.pinimg.com/1200x/ee/49/cb/ee49cb9862d6741598eec67fa8202f60.jpg');
+            background-size: cover;
+            background-position: center;
+            border: 3px solid #ff8fab;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            cursor: pointer;
+            z-index: 50;
+            transition: transform 0.3s;
+        }
+
+        .music-player:hover {
+            transform: scale(1.1);
+        }
+
+        .music-player.playing {
+            animation: spin 5s linear infinite;
+        }
+
+        @keyframes spin {
+            100% { transform: rotate(360deg); }
+        }
+
+        /* ЕКРАН 2: КОНВЕРТ */
         #main-screen {
             display: flex;
             flex-direction: column;
@@ -133,7 +173,7 @@
             justify-content: center;
             opacity: 0;
             transform: scale(0.9);
-            transition: opacity 0.8s ease, transform 0.8s ease;
+            transition: opacity 1s ease, transform 1s ease;
             width: 100%;
             max-width: 600px;
             padding: 20px;
@@ -162,10 +202,8 @@
             cursor: pointer;
             border-bottom-left-radius: 10px;
             border-bottom-right-radius: 10px;
-            transition: transform 0.3s ease;
         }
 
-        /* Верхній клапан конверта */
         .envelope-wrapper::before {
             content: "";
             position: absolute;
@@ -178,7 +216,6 @@
             transition: transform 0.4s ease 0.2s, z-index 0.2s ease 0.2s;
         }
 
-        /* Передній закриваючий трикутник (щоб повністю ховати лист!) */
         .envelope-wrapper::after {
             content: "";
             position: absolute;
@@ -193,7 +230,7 @@
             border-bottom-right-radius: 10px;
         }
 
-        /* Лист усередині */
+        /* Лист */
         .letter {
             position: absolute;
             bottom: 5px;
@@ -206,56 +243,59 @@
             padding: 15px;
             box-shadow: 0 0 10px rgba(0,0,0,0.1);
             overflow: hidden;
-            opacity: 0; /* Сховано за замовчуванням */
+            opacity: 0;
             transition: transform 0.5s ease, height 0.5s ease, z-index 0.1s ease 0.2s, opacity 0.3s ease;
         }
 
-        /* Сердечко-замок на конверті */
-        .heart-lock {
+        /* СУРГУЧНА ПЕЧАТКА 22.02 */
+        .wax-seal {
             position: absolute;
-            top: 85px;
-            left: 138px;
-            width: 24px;
-            height: 24px;
-            background-color: var(--heart-color);
-            transform: rotate(-45deg);
-            z-index: 5;
-            transition: transform 0.4s ease, opacity 0.3s ease;
-        }
-        .heart-lock::before, .heart-lock::after {
-            content: "";
-            position: absolute;
-            width: 24px;
-            height: 24px;
-            background-color: var(--heart-color);
+            top: 70px;
+            left: 120px;
+            width: 60px;
+            height: 60px;
+            background-color: #d84a75;
             border-radius: 50%;
+            z-index: 10;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #ffe5ec;
+            font-weight: bold;
+            font-size: 0.9rem;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            border: 3px double #f18fa8;
+            cursor: pointer;
+            transition: transform 0.3s ease, opacity 0.4s ease;
         }
-        .heart-lock::before { top: -12px; left: 0; }
-        .heart-lock::after { top: 0; left: 12px; }
 
-        /* ВІДКРИТИЙ СТАН */
+        .wax-seal:hover {
+            transform: scale(1.1) rotate(5deg);
+        }
+
+        .wax-seal.cracked {
+            opacity: 0;
+            transform: scale(1.5) rotate(-20deg);
+            pointer-events: none;
+        }
+
+        /* Відкритий стан */
         .envelope-wrapper.open::before {
             transform: rotateX(180deg);
             z-index: 1;
-        }
-
-        .envelope-wrapper.open .heart-lock {
-            transform: rotate(-45deg) scale(0);
-            opacity: 0;
         }
 
         .envelope-wrapper.open .letter {
             transform: translateY(-130px);
             height: 380px;
             z-index: 5;
-            opacity: 1; /* Стає видимим при відкритті */
+            opacity: 1;
             overflow-y: auto;
             box-shadow: 0 10px 30px rgba(0,0,0,0.2);
             width: 290px;
             left: 5px;
         }
 
-        /* Текст листа */
         .letter-text {
             color: #4a4a4a;
             font-size: 0.95rem;
@@ -265,7 +305,6 @@
             margin-bottom: 15px;
         }
 
-        /* Зображення */
         .letter-image {
             width: 100%;
             border-radius: 10px;
@@ -273,34 +312,33 @@
             margin-top: 10px;
             display: block;
         }
-
-        /* Анімації */
-        @keyframes beat {
-            0% { transform: scale(1) rotate(-45deg); }
-            50% { transform: scale(1.1) rotate(-45deg); }
-            100% { transform: scale(1) rotate(-45deg); }
-        }
-
-        @keyframes pulseText {
-            0% { transform: scale(1); }
-            100% { transform: scale(1.05); }
-        }
     </style>
 </head>
 <body>
 
-    <div id="intro-screen">
-        <h1 class="intro-title">Тебе пришло особенное сообщение! ✨</h1>
-        <div class="big-heart" onclick="startExperience()">
-            <span class="click-me">Открыть</span>
+    <!-- АУДІО-ТРЕК -->
+    <audio id="bg-music" src="https://assets.mixkit.co/music/preview/mixkit-beautiful-dream-dreamy-slow-texture-1165.mp3" loop></audio>
+
+    <!-- ПЛЕЄР ЗБОКУ -->
+    <div class="music-player" id="music-btn" onclick="toggleMusic()"></div>
+
+    <!-- ЕКРАН 1: КОТИКИ -->
+    <div id="cats-screen">
+        <div class="cats-title">Нажми на каждого котика, чтобы убрать их... 🐾✨</div>
+        <div class="cats-container">
+            <img src="https://i.pinimg.com/736x/1d/ca/a2/1dcaa28d80f2084714feac839c580566.jpg" class="cat-avatar" onclick="popCat(this)">
+            <img src="https://i.pinimg.com/736x/79/46/fc/7946fcd50621a9dbd7a62b8eaba2cc2f.jpg" class="cat-avatar" onclick="popCat(this)">
+            <img src="https://i.pinimg.com/736x/0c/44/21/0c4421b25a76657eb090f1acf497445f.jpg" class="cat-avatar" onclick="popCat(this)">
         </div>
     </div>
 
+    <!-- ЕКРАН 2: КОНВЕРТ -->
     <div id="main-screen">
-        <div class="hint">Нажми на конверт, чтобы достать письмо 💌</div>
+        <div class="hint">Сломай печать, чтобы открыть конверт 💌</div>
         
-        <div class="envelope-wrapper" id="envelope" onclick="toggleEnvelope()">
-            <div class="heart-lock"></div>
+        <div class="envelope-wrapper" id="envelope">
+            <!-- Сургучна печатка -->
+            <div class="wax-seal" id="seal" onclick="crackSeal(event)">22.02</div>
             
             <div class="letter" id="letter" onclick="event.stopPropagation();">
                 <div class="letter-text">
@@ -313,44 +351,145 @@
     </div>
 
     <script>
-        // Створення ефекту падаючих сердечок
-        function createFallingHearts() {
-            const symbols = ['❤️', '💖', '💕', '✨', '🌸'];
+        // Твої картинки для фону
+        const fallingImages = [
+            'https://i.pinimg.com/736x/67/9a/f3/679af3934396a0f0f0a912a634945731.jpg',
+            'https://i.pinimg.com/736x/7f/93/d7/7f93d78ae4ea9771e4d96120d13842f1.jpg',
+            'https://i.pinimg.com/736x/8e/2c/47/8e2c4777398ebd31263d3f3a14545cb8.jpg',
+            'https://i.pinimg.com/1200x/12/fe/f8/12fef8a212ee6669f28b33d0581b6b1b.jpg',
+            'https://i.pinimg.com/1200x/ef/2f/eb/ef2febe2bf37c20f4b39b66b008f11e5.jpg'
+        ];
+
+        let catsCount = 3;
+
+        // Клік на котика
+        function popCat(element) {
+            if (element.classList.contains('fade-out')) return;
+            
+            element.classList.add('fade-out');
+            catsCount--;
+
+            // Маленький сплеск конфеті при зникненні котика
+            confetti({
+                particleCount: 15,
+                spread: 40,
+                origin: { 
+                    x: element.getBoundingClientRect().left / window.innerWidth, 
+                    y: element.getBoundingClientRect().top / window.innerHeight 
+                }
+            });
+
+            // Якщо зникли всі 3 котики
+            if (catsCount === 0) {
+                setTimeout(() => {
+                    // Зникає екран з котиками
+                    document.getElementById('cats-screen').classList.add('hidden');
+                    
+                    // Великий вибух конфеті-сердечок на весь екран
+                    const duration = 2 * 1000;
+                    const end = Date.now() + duration;
+
+                    (function frame() {
+                        confetti({
+                            particleCount: 7,
+                            angle: 60,
+                            spread: 55,
+                            origin: { x: 0 },
+                            colors: ['#ff477e', '#ff8fab']
+                        });
+                        confetti({
+                            particleCount: 7,
+                            angle: 120,
+                            spread: 55,
+                            origin: { x: 1 },
+                            colors: ['#ff477e', '#ff8fab']
+                        });
+
+                        if (Date.now() < end) {
+                            requestAnimationFrame(frame);
+                        }
+                    }());
+
+                    // Плавно показуємо конверт
+                    setTimeout(() => {
+                        document.getElementById('main-screen').classList.add('visible');
+                        startFallingBackground(); // запускаємо постійне падіння картинок та сердечок
+                    }, 800);
+
+                }, 500);
+            }
+        }
+
+        // Постійне падіння картинок і сердечок на фоні
+        function startFallingBackground() {
             const body = document.querySelector('body');
             
             setInterval(() => {
-                const heart = document.createElement('div');
-                heart.classList.add('falling-heart');
-                heart.innerText = symbols[Math.floor(Math.random() * symbols.length)];
+                const item = document.createElement('div');
+                item.classList.add('falling-item');
+
+                // Випадково вибираємо: спавнити сердечко чи картинку
+                if (Math.random() > 0.4) {
+                    // Спавнимо сердечко
+                    item.classList.add('falling-heart');
+                    item.innerText = '❤️';
+                } else {
+                    // Спавнимо картинку
+                    const img = document.createElement('img');
+                    img.classList.add('falling-pic');
+                    img.src = fallingImages[Math.floor(Math.random() * fallingImages.length)];
+                    item.appendChild(img);
+                }
+
+                item.style.left = Math.random() * 100 + 'vw';
+                item.style.animationDuration = Math.random() * 3 + 5 + 's'; // 5-8 секунд падіння
                 
-                // Випадкова позиція по горизонталі та швидкість падіння
-                heart.style.left = Math.random() * 100 + 'vw';
-                heart.style.animationDuration = Math.random() * 3 + 4 + 's'; // 4-7 секунд
-                heart.style.fontSize = Math.random() * 15 + 15 + 'px'; // Розмір 15-30px
-                
-                body.appendChild(heart);
-                
-                // Видаляємо сердечко після завершення анімації
+                body.appendChild(item);
+
                 setTimeout(() => {
-                    heart.remove();
-                }, 7000);
-            }, 400); // Нове сердечко кожні 0.4 сек
+                    item.remove();
+                }, 8000);
+            }, 300); // Новий елемент кожні 0.3 секунди
         }
 
-        // Перехід від інтро до конверта
-        function startExperience() {
-            const intro = document.getElementById('intro-screen');
-            const main = document.getElementById('main-screen');
-            
-            intro.classList.add('hidden');
-            
-            setTimeout(() => {
-                main.classList.add('visible');
-                createFallingHearts(); // запускаємо сердечка на фоні
-            }, 400);
+        // Звуковий супровід
+        const audio = document.getElementById('bg-music');
+        const musicBtn = document.getElementById('music-btn');
+
+        // Ми ставимо посилання на аудіозапис пісні Feist - My Moon My Man
+        audio.src = "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"; // за замовчуванням приклад, ти можеш вставити сюди пряме mp3-посилання на пісню!
+
+        function toggleMusic() {
+            if (audio.paused) {
+                audio.play();
+                musicBtn.classList.add('playing');
+            } else {
+                audio.pause();
+                musicBtn.classList.remove('playing');
+            }
         }
 
-        // Відкриття/Закриття конверта
+        // Руйнування сургучної печатки
+        function crackSeal(event) {
+            event.stopPropagation(); // щоб не спрацював клік по конверту завчасно
+            const seal = document.getElementById('seal');
+            seal.classList.add('cracked');
+
+            // Робимо ефект тріскання (дрібне конфеті)
+            confetti({
+                particleCount: 30,
+                spread: 60,
+                colors: ['#d84a75', '#f18fa8'],
+                origin: { x: 0.5, y: 0.5 }
+            });
+
+            // Тепер конверт можна відкрити
+            document.getElementById('envelope').setAttribute('onclick', 'toggleEnvelope()');
+            
+            // Змінюємо підказку зверху
+            document.querySelector('.hint').innerText = "Нажми на конверт, чтобы достать письмо 💌";
+        }
+
         function toggleEnvelope() {
             const envelope = document.getElementById('envelope');
             envelope.classList.toggle('open');
