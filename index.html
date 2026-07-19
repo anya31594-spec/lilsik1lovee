@@ -1,272 +1,273 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>лилсик1лав ❤️</title>
-    <!-- Підключаємо бібліотеку для ефекту тріскання печатки -->
-    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <title>Do you love me? ❤️</title>
     <style>
-        :root {
-            --bg-color: #ffe5ec;
-            --heart-color: #ff477e;
-            --envelope-color: #ff8fab;
-            --envelope-dark: #fb6f92;
-            --paper-color: #fffdf9;
-        }
-
         * {
             box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            user-select: none;
+            -webkit-user-select: none;
         }
 
         body {
-            margin: 0;
-            padding: 0;
+            background-color: #121212;
+            color: #ffffff;
+            font-family: 'Courier New', Courier, monospace;
             min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
-            background: linear-gradient(135deg, #ffe5ec, #ffc2d1);
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             overflow: hidden;
             position: relative;
         }
 
-        /* АНІМАЦІЯ ПАДІННЯ СЕРДЕЧОК НА ФОНІ */
+        /* ПАДІННЯ СЕРДЕЧОК (активується після Yes) */
         .falling-heart {
             position: absolute;
             pointer-events: none;
             z-index: 1;
-            color: rgba(255, 71, 126, 0.45);
-            font-size: 24px;
+            color: rgba(255, 71, 126, 0.6);
+            font-size: 20px;
             animation: fall linear infinite;
         }
 
         @keyframes fall {
-            0% {
-                transform: translateY(-70px) rotate(0deg);
-                opacity: 0;
-            }
+            0% { transform: translateY(-50px) rotate(0deg); opacity: 0; }
             10% { opacity: 1; }
             90% { opacity: 1; }
-            100% {
-                transform: translateY(105vh) rotate(360deg);
-                opacity: 0;
-            }
+            100% { transform: translateY(105vh) rotate(360deg); opacity: 0; }
         }
 
-        /* ГОЛОВНИЙ КОНТЕЙНЕР */
-        .container {
+        /* РЕТРО-ВІКНО */
+        .window-box {
+            background-color: #1a1a1a;
+            border: 3px solid #ffffff;
+            width: 90%;
+            max-width: 360px;
+            box-shadow: 8px 8px 0px #333333;
+            z-index: 10;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        /* Шапка вікна з трьома крапками */
+        .window-header {
+            border-bottom: 3px solid #ffffff;
+            padding: 8px 12px;
             display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            width: 100%;
-            max-width: 600px;
-            padding: 20px;
-            z-index: 5;
+            gap: 6px;
+            background-color: #262626;
         }
 
-        .hint {
-            color: #fb6f92;
-            font-size: 1.2rem;
-            margin-bottom: 25px;
-            font-weight: 500;
+        .dot {
+            width: 8px;
+            height: 8px;
+            border: 1.5px solid #ffffff;
+            background-color: transparent;
+        }
+
+        /* Контент вікна */
+        .window-content {
+            padding: 30px 20px;
             text-align: center;
         }
 
-        /* КОНВЕРТ */
-        .envelope-wrapper {
-            position: relative;
-            width: 300px;
-            height: 200px;
-            background-color: var(--envelope-color);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
-            cursor: pointer;
-            border-bottom-left-radius: 10px;
-            border-bottom-right-radius: 10px;
-        }
-
-        .envelope-wrapper::before {
-            content: "";
-            position: absolute;
-            top: 0;
-            z-index: 4;
-            border-left: 150px solid transparent;
-            border-right: 150px solid transparent;
-            border-top: 100px solid var(--envelope-dark);
-            transform-origin: top;
-            transition: transform 0.4s ease 0.2s, z-index 0.2s ease 0.2s;
-        }
-
-        .envelope-wrapper::after {
-            content: "";
-            position: absolute;
-            bottom: 0;
-            width: 0;
-            height: 0;
-            border-left: 150px solid var(--envelope-color);
-            border-right: 150px solid var(--envelope-color);
-            border-bottom: 100px solid #fa809e;
-            z-index: 3;
-            border-bottom-left-radius: 10px;
-            border-bottom-right-radius: 10px;
-        }
-
-        /* ЛИСТ ВСЕРЕДИНІ */
-        .letter {
-            position: absolute;
-            bottom: 5px;
-            left: 15px;
-            width: 270px;
-            height: 180px;
-            background-color: var(--paper-color);
-            border-radius: 8px;
-            z-index: 2;
-            padding: 15px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
-            overflow: hidden;
-            opacity: 0;
-            transition: transform 0.5s ease, height 0.5s ease, z-index 0.1s ease 0.2s, opacity 0.3s ease;
-        }
-
-        /* СУРГУЧНА ПЕЧАТКА 22.02 */
-        .wax-seal {
-            position: absolute;
-            top: 70px;
-            left: 120px;
-            width: 60px;
-            height: 60px;
-            background-color: #d84a75;
-            border-radius: 50%;
-            z-index: 10;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #ffe5ec;
+        .question {
+            font-size: 1.3rem;
             font-weight: bold;
-            font-size: 0.9rem;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-            border: 3px double #f18fa8;
-            cursor: pointer;
-            transition: transform 0.3s ease, opacity 0.4s ease;
-        }
-
-        .wax-seal:hover {
-            transform: scale(1.1) rotate(5deg);
-        }
-
-        .wax-seal.cracked {
-            opacity: 0;
-            transform: scale(1.5) rotate(-20deg);
-            pointer-events: none;
-        }
-
-        /* ВІДКРИТИЙ СТАН КОНВЕРТА */
-        .envelope-wrapper.open::before {
-            transform: rotateX(180deg);
-            z-index: 1;
-        }
-
-        .envelope-wrapper.open .letter {
-            transform: translateY(-130px);
-            height: 380px;
-            z-index: 5;
-            opacity: 1;
-            overflow-y: auto;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-            width: 290px;
-            left: 5px;
-        }
-
-        .letter-text {
-            color: #4a4a4a;
-            font-size: 0.95rem;
+            margin-bottom: 30px;
             line-height: 1.5;
-            white-space: pre-line;
-            text-align: left;
-            margin-bottom: 15px;
+            word-wrap: break-word;
         }
 
-        .letter-image {
+        /* КНОПКИ */
+        .btn-container {
+            display: flex;
+            justify-content: center;
+            gap: 25px;
+            height: 50px;
+            position: relative;
+        }
+
+        .btn {
+            background-color: #ffffff;
+            color: #121212;
+            border: 2px solid #ffffff;
+            padding: 10px 25px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            font-family: 'Courier New', Courier, monospace;
+            cursor: pointer;
+            outline: none;
+            height: 45px;
+            min-width: 90px;
+            transition: background-color 0.2s, color 0.2s;
+        }
+
+        .btn:active {
+            background-color: #121212;
+            color: #ffffff;
+        }
+
+        /* Кнопка No, яка буде стрибати */
+        #no-btn {
+            position: relative;
+            z-index: 15;
+        }
+
+        /* КОНТЕЙНЕР ДЛЯ АНІМАЦІЇ СЕРЦЯ З ТЕКСТУ */
+        #heart-container {
+            position: absolute;
             width: 100%;
-            border-radius: 10px;
-            border: 2px dashed var(--envelope-color);
-            margin-top: 10px;
-            display: block;
+            height: 100%;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            z-index: 2;
+        }
+
+        .heart-text-particle {
+            position: absolute;
+            color: #ff477e;
+            font-size: 10px;
+            font-weight: bold;
+            white-space: nowrap;
+            opacity: 0;
+            transform: translate(-50%, -50%) scale(0.5);
+            animation: drawHeartParticle 0.5s forwards ease-out;
+            text-shadow: 0 0 4px rgba(255, 71, 126, 0.8);
+        }
+
+        @keyframes drawHeartParticle {
+            100% {
+                opacity: 1;
+                transform: translate(-50%, -50%) scale(1);
+            }
         }
     </style>
 </head>
 <body>
 
-    <div class="container">
-        <div class="hint">Сломай печать, чтобы открыть конверт 💌</div>
-        
-        <div class="envelope-wrapper" id="envelope">
-            <!-- Сургучна печатка -->
-            <div class="wax-seal" id="seal" onclick="crackSeal(event)">22.02</div>
-            
-            <!-- Лист -->
-            <div class="letter" id="letter" onclick="event.stopPropagation();">
-                <div class="letter-text">
-                    БУЛОЧКАА БУЛОЧКА 😭😻 ТЫ МОЕ СОЛНЫШКО. я тебя люблю очень очень сильно!!! БЕЗУМНОООООО БЕЗУИГО ОЧЕНЬЬ СИЛЬНО СИЛЬНО ЛЮБЛЮ ТЫ КОТЕНОЧЕКУ, Я ЕК МОГУ ОПИСАТЬ СВОИ ЧУВСТВА😭😭 блина ну ты понимаешь же
-                </div>
-                
-                <img class="letter-image" src="photo.jpg" alt="Наше фото" onerror="this.style.display='none';">
+    <!-- Ретро-вікно -->
+    <div class="window-box" id="main-window">
+        <div class="window-header">
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+        </div>
+        <div class="window-content">
+            <div class="question" id="text-display">Do you love me?</div>
+            <div class="btn-container" id="buttons-area">
+                <button class="btn" id="yes-btn" onclick="selectYes()">Yes</button>
+                <button class="btn" id="no-btn" onclick="moveNoButton(this)">No</button>
             </div>
         </div>
     </div>
 
+    <!-- Контейнер для малювання серця -->
+    <div id="heart-container"></div>
+
     <script>
-        // Запуск нескінченного падіння сердечок з самого початку
-        function startFallingHearts() {
-            const body = document.querySelector('body');
+        // Функція для переміщення кнопки No при натисканні (підлаштовано під тачскріни)
+        function moveNoButton(button) {
+            // Переводимо кнопку в абсолютне позиціонування, якщо вона ще не там
+            if (button.style.position !== 'fixed') {
+                button.style.position = 'fixed';
+            }
+
+            // Враховуємо розміри екрану телефону та самої кнопки, щоб вона не вилітала за краї
+            const padding = 30;
+            const btnWidth = button.offsetWidth;
+            const btnHeight = button.offsetHeight;
+
+            const maxX = window.innerWidth - btnWidth - padding;
+            const maxY = window.innerHeight - btnHeight - padding;
+
+            // Генеруємо випадкові координати
+            const randomX = Math.floor(Math.random() * (maxX - padding)) + padding;
+            const randomY = Math.floor(Math.random() * (maxY - padding)) + padding;
+
+            // Змінюємо положення кнопки
+            button.style.left = randomX + 'px';
+            button.style.top = randomY + 'px';
+        }
+
+        // Користувач натиснув YES
+        function selectYes() {
+            // 1. Змінюємо текст у віконці
+            document.getElementById('text-display').innerText = "can't believe you clicked yes! I love ya to my lil' babe";
             
+            // 2. Ховаємо кнопки
+            document.getElementById('buttons-area').style.display = 'none';
+            
+            // 3. Запускаємо дощ із сердечок на фоні
+            startFallingHearts();
+
+            // 4. Запускаємо послідовну побудову серця з тексту
+            setTimeout(animateTextHeart, 400);
+        }
+
+        // Фоновий дощ із сердечок
+        function startFallingHearts() {
             setInterval(() => {
                 const heart = document.createElement('div');
                 heart.classList.add('falling-heart');
                 heart.innerText = '❤️';
-
                 heart.style.left = Math.random() * 100 + 'vw';
-                heart.style.animationDuration = Math.random() * 3 + 4 + 's'; // падіння від 4 до 7 секунд
-                heart.style.fontSize = Math.random() * 15 + 15 + 'px'; // випадковий розмір сердечок
-                
-                body.appendChild(heart);
-
-                setTimeout(() => {
-                    heart.remove();
-                }, 7000);
-            }, 300); // нове сердечко з'являється кожні 0.3 секунди
+                heart.style.animationDuration = Math.random() * 2 + 3 + 's';
+                document.body.appendChild(heart);
+                setTimeout(() => heart.remove(), 5000);
+            }, 300);
         }
 
-        // Запускаємо дощ із сердечок відразу при завантаженні сторінки
-        startFallingHearts();
-
-        // Клік на сургучну печатку
-        function crackSeal(event) {
-            event.stopPropagation(); // запобігаємо передчасному відкриттю конверта
-            const seal = document.getElementById('seal');
-            seal.classList.add('cracked');
-
-            // Гарний ефект розлітання дрібних частинок печатки
-            confetti({
-                particleCount: 35,
-                spread: 60,
-                colors: ['#d84a75', '#f18fa8'],
-                origin: { x: 0.5, y: 0.5 }
-            });
-
-            // Тепер конверт активовано для відкриття
-            document.getElementById('envelope').setAttribute('onclick', 'toggleEnvelope()');
+        // Генерація та послідовна анімація серця з тексту "i love ya"
+        function animateTextHeart() {
+            const container = document.getElementById('heart-container');
+            const totalParticles = 75; // Кількість текстових елементів у контурі
+            const centerX = window.innerWidth / 2;
             
-            // Оновлюємо текст-підказку
-            document.querySelector('.hint').innerText = "Нажми на конверт, чтобы достать письмо 💌";
-        }
+            // Підлаштовуємо висоту центру серця під екрани мобільних (трохи вище або нижче вікна)
+            const centerY = window.innerHeight / 2; 
+            
+            // Розмір серця для мобільних пристроїв
+            const scale = Math.min(window.innerWidth * 0.04, 13); 
 
-        // Відкриття/закриття конверта
-        function toggleEnvelope() {
-            const envelope = document.getElementById('envelope');
-            envelope.classList.toggle('open');
+            let i = 0;
+
+            // Інтервал для створення послідовного ефекту «малювання» по лініях серця
+            const drawingInterval = setInterval(() => {
+                if (i >= totalParticles) {
+                    clearInterval(drawingInterval);
+                    return;
+                }
+
+                // Математична формула серця (параметричне рівняння)
+                const t = (i / totalParticles) * 2 * Math.PI;
+                
+                // Рахуємо X та Y координати для кожної точки
+                const x = 16 * Math.pow(Math.sin(t), 3);
+                const y = -(13 * Math.cos(t) - 5 * Math.cos(2*t) - 2 * Math.cos(3*t) - Math.cos(4*t));
+
+                const posX = centerX + x * scale;
+                const posY = centerY + y * scale;
+
+                // Створюємо елемент тексту
+                const p = document.createElement('div');
+                p.classList.add('heart-text-particle');
+                p.innerText = 'i love ya';
+                p.style.left = posX + 'px';
+                p.style.top = posY + 'px';
+                
+                // Невеличкий випадковий поворот тексту для красивого хаотичного контуру
+                p.style.transform = `translate(-50%, -50%) rotate(${Math.sin(t) * 15}deg)`;
+
+                container.appendChild(p);
+                i++;
+            }, 40); // 40мс між появою кожної частинки створює ідеальний ефект малювання
         }
     </script>
 </body>
